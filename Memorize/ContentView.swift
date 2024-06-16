@@ -8,18 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = ["🐶", "🐱", "🐭", "🐹", "🦊", "🐻", "🐼", "🐻‍❄️", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐋", "🐧", "🐦", "🐤", "🐺", "🐡"]
+    @State var emojis = ["🐶", "🐱", "🐭", "🐹", "🦊", "🐻", "🐼", "🐻‍❄️", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐋", "🐧", "🐦", "🐤", "🐺", "🐡"]
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 85),spacing:0)],spacing:0) {
-                ForEach(0 ..< emojis.count, id: \.self) { index in
-                    CardView(cardContent: emojis[index]).aspectRatio(2/3, contentMode: .fit)
+            cards
+        }
+        Button(action: {
+            emojis.shuffle()
+        }, label: {
+            Image(systemName:"arrow.clockwise.circle.fill")
+            Text("Button")
+        })
+        .buttonStyle(BorderedProminentButtonStyle())
+        .buttonBorderShape(.capsule)
+            .padding()
+    }
+
+    var cards: some View {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
+            ForEach(0 ..< emojis.count, id: \.self) { index in
+                CardView(cardContent: emojis[index])
+                    .aspectRatio(2 / 3, contentMode: .fit)
                     .padding(4)
-                }
             }
         }
-
-        .padding()
     }
 }
 
