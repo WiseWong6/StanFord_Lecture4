@@ -8,31 +8,36 @@
 import Foundation
 import SwiftUI
 
-class EmojiMemoryGame:ObservableObject {
+class EmojiMemoryGame: ObservableObject {
     // viewModel负责与View和Model通信，其将数据传入Model，并将结果返回View，先要有数据
     private static let emojis = ["🐶", "🐱", "🐭", "🐹", "🦊", "🐻", "🐼", "🐻‍❄️", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐋", "🐧", "🐦", "🐤", "🐺", "🐡"]
 
     // 这是一个ViewModel，需要调用model的方法，首先需要有一个model，是已定义的model类型
+    // 用 Published 声明model，当变化时涉及的 View 会重新渲染
     @Published var model = createMemoryGame()
-    
-    //用emojis数组初始化model里的Card的content
-    static func createMemoryGame()->MemoryGame<String>{
-        return MemoryGame(range: emojis.count) { index in
-            return emojis[index]
-        }
+
+    // 用emojis数组初始化model里的Card的content
+    // 定义一个 createMemoryGame 方法返回 Model类型，并完成初始化
+    //range传入了emojis 数组的计数，cardFactory 传入 index 并返回一个 string
+    //注意这里 index 表示传入闭包的值，而 in用于分隔传入参数和闭包主体，in 后面表示接受值后要运行的代码
+    private static func createMemoryGame() -> MemoryGame<String> {
+        MemoryGame(range: emojis.count, cardFactory: { index in
+            emojis[index]
+        })
     }
-    
-    //和上一个方法衔接，上一个方法不仅是初始化了卡片内容，还将内容放入了cards数组
-    var cards:[MemoryGame<String>.Card]{
+
+    //声明一个 cards 变量，调用 model 的 cards 值返回给 viewModel
+    var cards: [MemoryGame<String>.Card] {
         return model.cards
     }
-    
-    //这是一个让model调用它的shuffle方法的方法
-    func shuffle(){
+
+    // 这是一个让model调用它的shuffle方法的方法
+    func shuffle() {
         model.shuffle()
     }
-    
-    func toggle(){
-        model.toggle()
+
+    func toggle(at index: Int) {
+//        model.cards[index].isFaceUp.toggle()
+        model.toggle(at: index)
     }
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var viewModel:EmojiMemoryGame
-    
+    @ObservedObject var viewModel: EmojiMemoryGame
+
     var body: some View {
         ScrollView {
             cards
@@ -17,19 +17,18 @@ struct ContentView: View {
         Button(action: {
             viewModel.shuffle()
         }, label: {
-            Image(systemName:"arrow.clockwise.circle.fill")
+            Image(systemName: "arrow.clockwise.circle.fill")
             Text("Shuffle")
         })
-            .buttonStyle(BorderedProminentButtonStyle())
-            .buttonBorderShape(.capsule)
-            
+        .buttonStyle(BorderedProminentButtonStyle())
+        .buttonBorderShape(.capsule)
         .padding()
     }
 
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
             ForEach(0 ..< viewModel.cards.count, id: \.self) { index in
-                CardView(card: viewModel.cards[index])
+                CardView(viewModel: viewModel, card: viewModel.cards[index], index: index)
                     .aspectRatio(2 / 3, contentMode: .fit)
                     .padding(4)
             }
@@ -38,7 +37,10 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    var card:MemoryGame<String>.Card
+    @ObservedObject var viewModel: EmojiMemoryGame
+    var card: MemoryGame<String>.Card
+    var index: Int
+
     var body: some View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12.0)
@@ -54,7 +56,7 @@ struct CardView: View {
         }
         .foregroundColor(.blue)
         .onTapGesture {
-//            card.isFaceUp.toggle()
+            viewModel.toggle(at: index)
         }
     }
 }
