@@ -12,6 +12,7 @@ struct ContentView: View {
 
     var body: some View {
         ScrollView {
+            Text("测试分支上传是否正常")
             cards
         }
         Button(action: {
