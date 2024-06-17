@@ -12,7 +12,7 @@ struct ContentView: View {
 
     var body: some View {
         ScrollView {
-            Text("测试分支上传是否正常")
+            Text("后续通过这个分支写课程的代码")
             cards
         }
         Button(action: {
