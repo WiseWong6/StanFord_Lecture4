@@ -22,9 +22,9 @@ class EmojiMemoryGame: ObservableObject {
     //注意这里 index 表示传入闭包的值，而 in用于分隔传入参数和闭包主体，in 后面表示接受值后要运行的代码
     //为了让卡片对可修改,传入常量，但是卡片内容是通过 emoji 来初始化的，赋值给 index 必然会越界，增加越界保护
     private static func createMemoryGame() -> MemoryGame<String> {
-        MemoryGame(numberOfPairsOfCard: 2, cardFactory: { index in
-            if emojis.indices.contains(index){
-                return emojis[index]
+        MemoryGame(numberOfPairsOfCard: 8, cardFactory: {
+            if emojis.indices.contains($0){
+                return emojis[$0]
             } else{
                 return "⁉️"
             }
